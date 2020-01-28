@@ -8,5 +8,22 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.610.0",
+    "axios": "^0.19.2",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^5.12.1",
+    "showdown": "^1.9.1",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "serverless-dynamodb-local": "^0.2.39"
+  }
 }
