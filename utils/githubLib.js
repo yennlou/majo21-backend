@@ -5,9 +5,11 @@ const base64 = require('./base64')
 const githubAPI = axios.create({
   baseURL: process.env.GITHUB_ENDPOINT
 })
+githubAPI.defaults.headers.common.Authorization = 'Token ' + process.env.GITHUB_TOKEN
 
 const getPostMetaData = (md) => {
   const conv = new showdown.Converter({ metadata: true })
+  conv.makeHtml(md)
   return conv.getMetadata()
 }
 
@@ -24,7 +26,8 @@ const getPostContentAsync = async (path) => {
   return {
     id: `post:${encodedPath}`,
     path: encodedPath,
-    postType: 'post',
+    postType: 'blog',
+    content,
     ...meta
   }
 }

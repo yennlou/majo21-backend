@@ -17,7 +17,7 @@ function serializePost (post) {
   const { id, createdAt, postType, ...rest } = post
   return {
     PK: id,
-    SK: createdAt,
+    SK: createdAt || '1977-01-01',
     GSI1: 'post:' + postType,
     ...rest
   }

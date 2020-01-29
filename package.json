@@ -12,8 +12,6 @@
   "dependencies": {
     "aws-sdk": "^2.610.0",
     "axios": "^0.19.2",
-    "serverless-dotenv-plugin": "^2.1.1",
-    "serverless-offline": "^5.12.1",
     "showdown": "^1.9.1",
     "uuid": "^3.4.0"
   },
@@ -24,6 +22,8 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "serverless-dynamodb-local": "^0.2.39"
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^5.12.1",
+    "serverless-dotenv-plugin": "^2.1.1"
   }
 }

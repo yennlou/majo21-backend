@@ -9,6 +9,8 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   tableName: ${self:service}-db-${self:custom.stage}
   dynamodb:
+    start:
+      migrate: true
     stages:
       - dev
 
@@ -24,6 +26,7 @@ provider:
     DYNAMODB_TABLE: ${self:custom.tableName}
     DYNAMODB_ENDPOINT_LOCAL: ${env:DYNAMODB_ENDPOINT_LOCAL}
     GITHUB_TOKEN: ${env:GITHUB_TOKEN}
+    GITHUB_WEBHOOK_SECRET: ${env:GITHUB_WEBHOOK_SECRET}
     GITHUB_ENDPOINT: ${env:GITHUB_ENDPOINT}
   iamRoleStatements:
     - Effect: Allow
@@ -35,11 +38,14 @@ provider:
         - "Fn::GetAtt": [ MainTable, Arn ]
 
 functions:
+  authGithook:
+    handler: auth.githook
+    cors: true
   getPosts:
     handler: api/getPosts.main
     events:
       - http:
-          path: posts/t/{type}/{id}
+          path: posts/t/{postType}
           method: get
           cors: true
   loadPosts:
@@ -50,3 +56,4 @@ functions:
       - http:
           path: webhooks/github/e/push
           method: post
+          authorizer: authGithook
