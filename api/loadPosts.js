@@ -1,8 +1,8 @@
-const db = require('../utils/db')
-const { success } = require('../utils/response')
-const { generatePostAsync } = require('../utils/githubLib')
+import db from '../utils/db'
+import { success } from '../utils/response'
+import { generatePostAsync } from '../utils/githubLib'
 
-exports.main = async (event) => {
+const main = async (event) => {
   const postIterator = generatePostAsync()
   for await (const post of postIterator) {
     await db.putPost({ postType: 'blog', ...post })
@@ -11,3 +11,5 @@ exports.main = async (event) => {
     message: 'All posts are reloaded.'
   })
 }
+
+export { main }

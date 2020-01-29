@@ -16,7 +16,7 @@ function failure (body) {
   return buildResponse(500, body)
 }
 
-module.exports = {
+export {
   buildResponse,
   success,
   failure

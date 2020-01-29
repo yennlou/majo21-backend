@@ -1,4 +1,5 @@
-const AWS = require('aws-sdk')
+import AWS from 'aws-sdk'
+
 const IS_OFFLINE = process.env.IS_OFFLINE
 const TableName = process.env.DYNAMODB_TABLE
 const DYNAMODB_ENDPOINT_LOCAL = process.env.DYNAMODB_ENDPOINT_LOCAL
@@ -87,7 +88,7 @@ const updatePost = async (post) => {
   return post
 }
 
-module.exports = {
+export default {
   getPosts,
   putPost,
   deletePost,

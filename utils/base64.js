@@ -94,4 +94,4 @@ var Base64 = {
   }
 }
 
-module.exports = Base64
+export default Base64

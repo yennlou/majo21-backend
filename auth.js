@@ -18,7 +18,7 @@ const generatePolicy = (principalId, effect, resource) => {
   return authResponse
 }
 
-exports.githook = (event, context, callback) => {
+export const githook = (event, context, callback) => {
   const principalId = 'githook-001'
   if (!event.authorizationToken) {
     return callback(new Error('Unauthorized'))

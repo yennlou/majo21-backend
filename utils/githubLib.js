@@ -1,6 +1,6 @@
-const axios = require('axios')
-const showdown = require('showdown')
-const base64 = require('./base64')
+import axios from 'axios'
+import showdown from 'showdown'
+import base64 from './base64'
 
 const githubAPI = axios.create({
   baseURL: process.env.GITHUB_ENDPOINT
@@ -40,7 +40,7 @@ const generatePostAsync = async function * () {
   }
 }
 
-module.exports = {
+export {
   githubAPI,
   getPostDirectoryAsync,
   getPostContentAsync,

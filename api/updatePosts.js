@@ -1,8 +1,8 @@
-const db = require('../utils/db')
-const { success } = require('../utils/response')
-const { getPostContentAsync } = require('../utils/githubLib')
+import db from '../utils/db'
+import { success } from '../utils/response'
+import { getPostContentAsync } from '../utils/githubLib'
 
-exports.main = async (event) => {
+const main = async (event) => {
   const { commits } = JSON.parse(event.body)
   const { added, removed, modified } = commits[0]
   const PostFilter = x => x.startsWith('blogs/')
@@ -19,3 +19,5 @@ exports.main = async (event) => {
   }
   return success(commits[0])
 }
+
+export { main }
