@@ -53,3 +53,5 @@ env.yml
 
 # Serverless
 .dynamodb
+
+package-lock.json

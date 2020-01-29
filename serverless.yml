@@ -43,6 +43,11 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - "Fn::GetAtt": [ MainTable, Arn ]
+        - "Fn::Join":
+            - '/'
+            -
+              - "Fn::GetAtt": [ MainTable, Arn ]
+              - "index/*"
 
 functions:
   authGithook:

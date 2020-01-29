@@ -1,5 +1,12 @@
 {
   "comments": false,
   "presets": ["@babel/preset-env"],
-  "plugins": ["source-map-support"]
+  "plugins": [
+    ["@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ],
+    "source-map-support"
+  ]
 }
