@@ -25,7 +25,6 @@ const getPostContentAsync = async (path) => {
   const meta = getPostMetaData(content)
   return {
     id: `post:${encodedPath}`,
-    path: encodedPath,
     postType: 'blog',
     content,
     ...meta
