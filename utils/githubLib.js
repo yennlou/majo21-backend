@@ -1,5 +1,5 @@
 import axios from 'axios'
-import showdown from 'showdown'
+import yaml, { MINIMAL_SCHEMA } from 'js-yaml'
 import base64 from './base64'
 
 const githubAPI = axios.create({
@@ -8,9 +8,8 @@ const githubAPI = axios.create({
 githubAPI.defaults.headers.common.Authorization = 'Token ' + process.env.GITHUB_TOKEN
 
 const getPostMetaData = (md) => {
-  const conv = new showdown.Converter({ metadata: true })
-  conv.makeHtml(md)
-  return conv.getMetadata()
+  const metaText = /-{3}(.+?)-{3}/s.exec(md)[1]
+  return yaml.safeLoad(metaText, { schema: MINIMAL_SCHEMA })
 }
 
 const getPostDirectoryAsync = async () => {
@@ -22,12 +21,12 @@ const getPostContentAsync = async (path) => {
   const encodedPath = encodeURI(path)
   const { data } = await githubAPI.get('/contents/' + encodedPath)
   const content = base64.decode(data.content)
-  const meta = getPostMetaData(content)
+  const { type, ...otherMeta } = getPostMetaData(content)
   return {
     id: `post:${encodedPath}`,
-    postType: 'blog',
+    postType: type || 'blog',
     content,
-    ...meta
+    ...otherMeta
   }
 }
 

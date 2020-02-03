@@ -6,7 +6,6 @@
       {
         "regenerator": true
       }
-    ],
-    "source-map-support"
+    ]
   ]
 }

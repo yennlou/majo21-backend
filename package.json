@@ -13,8 +13,7 @@
     "@babel/runtime": "^7.8.3",
     "aws-sdk": "^2.610.0",
     "axios": "^0.19.2",
-    "showdown": "^1.9.1",
-    "source-map-support": "^0.5.16",
+    "js-yaml": "^3.13.1",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
@@ -22,7 +21,6 @@
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "babel-loader": "^8.0.6",
-    "babel-plugin-source-map-support": "^2.1.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.0",
@@ -33,7 +31,6 @@
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^5.12.1",
     "serverless-webpack": "^5.3.1",
-    "webpack": "^4.41.5",
-    "webpack-node-externals": "^1.7.2"
+    "webpack": "^4.41.5"
   }
 }
