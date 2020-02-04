@@ -3,8 +3,8 @@ import { success } from '../utils/response'
 import { generatePostAsync } from '../utils/githubLib'
 
 const main = async (event) => {
-  const postIterator = generatePostAsync()
-  for await (const post of postIterator) {
+  const blogIterator = generatePostAsync('blog')
+  for await (const post of blogIterator) {
     await db.putPost(post)
   }
   return success({
