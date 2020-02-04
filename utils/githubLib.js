@@ -34,12 +34,14 @@ const generatePostAsync = async function * (postType = 'blog') {
       yield {
         id: `post:${encodedPath}`,
         content: postContent,
+        postType,
         ...meta
       }
     } else if (postType === 'gallery') {
       const postData = yaml.safeLoad(postContent, { schema: MINIMAL_SCHEMA })
       yield {
         id: `post:${encodedPath}`,
+        postType,
         ...postData
       }
     }

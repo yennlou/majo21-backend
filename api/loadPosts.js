@@ -7,6 +7,10 @@ const main = async (event) => {
   for await (const post of blogIterator) {
     await db.putPost(post)
   }
+  const galleryIterator = generatePostAsync('gallery')
+  for await (const post of galleryIterator) {
+    await db.putPost(post)
+  }
   return success({
     message: 'All posts are reloaded.'
   })
