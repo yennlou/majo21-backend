@@ -12,8 +12,9 @@ const getPostMetaData = (md) => {
   return yaml.safeLoad(metaText, { schema: MINIMAL_SCHEMA })
 }
 
-const getPostDirectoryAsync = async () => {
-  const { data } = await githubAPI.get('/contents/blogs')
+const getPostDirectoryAsync = async (postType = 'blog') => {
+  const GITHUB_BRANCH = process.env.GITHUB_BRANCH
+  const { data } = await githubAPI.get(`/contents/posts/${postType}?ref=${GITHUB_BRANCH}`)
   return data.map(post => post.name)
 }
 
@@ -30,10 +31,10 @@ const getPostContentAsync = async (path) => {
   }
 }
 
-const generatePostAsync = async function * () {
+const generatePostAsync = async function * (postType = 'blog') {
   const directory = await getPostDirectoryAsync()
   for (const fileName of directory) {
-    const post = await getPostContentAsync('blogs/' + fileName)
+    const post = await getPostContentAsync(`posts/${postType}/${fileName}`)
     yield post
   }
 }
