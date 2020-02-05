@@ -47,6 +47,21 @@ const getPosts = async (postType = 'blog') => {
   return resp.Items.map(deserializePost)
 }
 
+const getPost = async (id) => {
+  const params = {
+    TableName,
+    KeyConditionExpression: 'PK = :postId',
+    ExpressionAttributeValues: {
+      ':postId': id
+    }
+  }
+  const resp = await dynamodb.query(params).promise()
+  if (!resp.Items.length) {
+    return null
+  }
+  return deserializePost(resp.Items[0])
+}
+
 const putPost = async (post) => {
   const params = {
     TableName,
@@ -56,7 +71,8 @@ const putPost = async (post) => {
   return post
 }
 
-const deletePost = async (post) => {
+const deletePost = async (id) => {
+  const post = await getPost(id)
   const { PK, SK } = serializePost(post)
   const params = {
     TableName,
@@ -89,6 +105,7 @@ const updatePost = async (post) => {
 }
 
 export default {
+  getPost,
   getPosts,
   putPost,
   deletePost,

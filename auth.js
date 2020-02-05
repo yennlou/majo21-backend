@@ -1,3 +1,5 @@
+import { verifyWebhookData } from './utils/githubLib'
+
 const generatePolicy = (principalId, effect, resource) => {
   const authResponse = {
     principalId
@@ -20,12 +22,8 @@ const generatePolicy = (principalId, effect, resource) => {
 
 export const githook = (event, context, callback) => {
   const principalId = 'githook-001'
-  if (!event.authorizationToken) {
-    return callback(new Error('Unauthorized'))
-  }
-  const token = event.authorizationToken.split(' ')[1]
-  if (!token || token !== process.env.GITHUB_WEBHOOK_SECRET) {
-    return callback(new Error('Unauthorized'))
+  if (!verifyWebhookData(event)) {
+    return callback(new Error('Githook validation failed.'))
   }
   return callback(null, generatePolicy(principalId, 'Allow', event.methodArn))
 }

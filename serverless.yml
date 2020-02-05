@@ -53,6 +53,10 @@ functions:
   authGithook:
     handler: auth.githook
     cors: true
+  getPost:
+    handler: api/getPost.main
+  deletePost:
+    handler: api/deletePost.main
   getPosts:
     handler: api/getPosts.main
     events:
