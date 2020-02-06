@@ -50,9 +50,6 @@ provider:
               - "index/*"
 
 functions:
-  authGithook:
-    handler: auth.githook
-    cors: true
   getPost:
     handler: api/getPost.main
   deletePost:
@@ -72,4 +69,3 @@ functions:
       - http:
           path: webhooks/github/e/push
           method: post
-          authorizer: authGithook

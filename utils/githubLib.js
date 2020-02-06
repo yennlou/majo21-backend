@@ -55,13 +55,13 @@ const generatePostAsync = async function * (postType = 'blog') {
 const verifyWebhookData = (event) => {
   const secret = process.env.GITHUB_WEBHOOK_SECRET
   const sigHeaderName = 'X-Hub-Signature'
-  const payload = JSON.stringify(event.body)
+  const payload = event.body
   if (!payload) return false
   const sig = event.headers[sigHeaderName] || ''
   const hmac = crypto.createHmac('sha1', secret)
   const digest = Buffer.from('sha1=' + hmac.update(payload).digest('hex'), 'utf8')
   const checksum = Buffer.from(sig, 'utf8')
-  return (checksum.length === digest.length && crypto.timingSafeEqual(digest, checksum))
+  return crypto.timingSafeEqual(digest, checksum)
 }
 
 export {

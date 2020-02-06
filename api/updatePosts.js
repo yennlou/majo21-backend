@@ -1,8 +1,11 @@
 import db from '../utils/db'
-import { success } from '../utils/response'
-import { getPostContentAsync, makePost } from '../utils/githubLib'
+import { success, failure } from '../utils/response'
+import { getPostContentAsync, makePost, verifyWebhookData } from '../utils/githubLib'
 
 const main = async (event) => {
+  if (!verifyWebhookData(event)) {
+    return failure('Githook validation failed.')
+  }
   const { commits } = JSON.parse(event.body)
   const { added, removed, modified } = commits[0]
   const PostFilter = x => x.startsWith('posts/')
