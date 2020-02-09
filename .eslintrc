@@ -1,8 +1,11 @@
 {
+  "plugins": ["jest"],
   "env": {
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": [
-    "standard"
+    "standard",
+    "plugin:jest/recommended"
   ]
 }

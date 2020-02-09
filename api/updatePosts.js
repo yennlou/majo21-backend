@@ -7,6 +7,9 @@ const main = async (event) => {
     return failure('Githook validation failed.')
   }
   const { commits } = JSON.parse(event.body)
+  if (commits.length === 0) {
+    return success({ message: 'No updates.' })
+  }
   const { added, removed, modified } = commits[0]
   const PostFilter = x => x.startsWith('posts/')
   const addedList = [...added, ...modified].filter(PostFilter)
@@ -23,7 +26,7 @@ const main = async (event) => {
     const post = makePost(encodedPath, postType, postContent)
     await db.putPost(post)
   }
-  return success(commits[0])
+  return success({ message: 'Update succeed.' })
 }
 
 export { main }

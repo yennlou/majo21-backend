@@ -49,8 +49,8 @@ env.yml
 .env
 .env.*
 
-# Jetbrains IDEs
-.idea
+# VS Code
+.vscode
 
 # Serverless
 .dynamodb
