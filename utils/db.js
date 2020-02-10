@@ -71,6 +71,29 @@ const putPost = async (post) => {
   return post
 }
 
+const putPosts = async (posts) => {
+  const serializedPost = posts.map(serializePost)
+  const chunks =
+    [...Array(Math.ceil(serializedPost.length / 25)).keys()]
+      .map(idx => serializedPost.slice(idx, idx + 25))
+
+  for (const chunk of chunks) {
+    const params = {
+      RequestItems: {
+        [TableName]: chunk.map((post) => ({
+          PutRequest: {
+            Item: {
+              ...post
+            }
+          }
+        }))
+      }
+    }
+    await dynamodb.batchWrite(params).promise()
+  }
+  return true
+}
+
 const deletePost = async (id) => {
   const post = await getPost(id)
   const { PK, SK } = serializePost(post)
@@ -79,7 +102,7 @@ const deletePost = async (id) => {
     Key: { PK, SK }
   }
   await dynamodb.delete(params).promise()
-  return true
+  return post
 }
 
 const updatePost = async (post) => {
@@ -108,6 +131,7 @@ export default {
   getPost,
   getPosts,
   putPost,
+  putPosts,
   deletePost,
   updatePost
 }
