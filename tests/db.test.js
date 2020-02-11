@@ -27,7 +27,7 @@ const post03 = {
 describe('Testing db library', () => {
   let db
   beforeAll(async () => {
-    db = (await import('../utils/db')).default
+    db = (await import('../src/utils/db')).default
   })
 
   test('put one post', async () => {

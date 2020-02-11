@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { verifyWebhookData } from '../utils/githubLib'
+import { verifyWebhookData } from '../src/utils/githubLib'
 
 test('verify github webhook secret', () => {
   const payload = JSON.stringify({

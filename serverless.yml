@@ -22,7 +22,39 @@ package:
   individually: true
 
 resources:
-  - ${file(resources/dynamodb-table.yml)}
+  Resources:
+    MainTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+          - AttributeName: GSI1
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: GSI1
+            KeySchema:
+              - AttributeName: GSI1
+                KeyType: HASH
+              - AttributeName: SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 provider:
   name: aws
@@ -51,20 +83,20 @@ provider:
 
 functions:
   getPost:
-    handler: api/getPost.main
+    handler: src/api/getPost.main
   deletePost:
-    handler: api/deletePost.main
+    handler: src/api/deletePost.main
   getPosts:
-    handler: api/getPosts.main
+    handler: src/api/getPosts.main
     events:
       - http:
           path: posts/t/{postType}
           method: get
           cors: true
   loadPosts:
-    handler: api/loadPosts.main
+    handler: src/api/loadPosts.main
   updatePosts:
-    handler: api/updatePosts.main
+    handler: src/api/updatePosts.main
     events:
       - http:
           path: webhooks/github/e/push

@@ -1,0 +1,26 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - npm install
+  pre_build:
+    commands:
+      - echo start testing
+      - npm run test
+      - npx codecov -t ${CODECOV_TOKEN}
+      - echo end testing
+  build:
+      - echo start deploying
+      - REPO_BRANCH=`git symbolic-ref HEAD --short 2>/dev/null`
+      - STAGE_NAME=dev
+      - |
+        if [ "${REPO_BRANCH}" = "master" ]; then
+          STAGE_NAME=prod
+        fi
+      - npx sls deploy -s ${STAGE_NAME}
+      - echo end deploying
+  post_build:
+    commands:
+      - echo Deployment completed on `date`
