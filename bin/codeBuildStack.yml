@@ -63,16 +63,16 @@ Resources:
         Image: !Sub '${BuildImage}'
         EnvironmentVariables:
           - Name: GITHUB_ENDPOINT
-            Type: String
+            Type: PLAINTEXT
             Value: !Ref GithubEndpoint
           - Name: GITHUB_BRANCH
-            Type: String
+            Type: PLAINTEXT
             Value: !Ref GithubBranch
           - Name: GITHUB_TOKEN
-            Type: String
+            Type: PLAINTEXT
             Value: !Ref GithubToken
           - Name: GITHUB_WEBHOOK_SECRET
-            Type: String
+            Type: PLAINTEXT
             Value: !Ref GithubWebhookSecret
       Source:
         Auth:

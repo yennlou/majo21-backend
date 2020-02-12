@@ -39,7 +39,7 @@ yargs
     'create cicd stack',
     (yargs) => {},
     ({ stage }) => {
-      console.log(`Start Creating stack-${stage}...`)
+      console.log(`Start creating stack-${stage}...`)
       cloudformation.createStack(makeParams(stage), (err, data) => {
         if (err) console.log(err, err.stack)
         else console.log(data)

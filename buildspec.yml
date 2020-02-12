@@ -12,6 +12,7 @@ phases:
       - npx codecov -t ${CODECOV_TOKEN}
       - echo end testing
   build:
+    commands:
       - echo start deploying
       - REPO_BRANCH=`git symbolic-ref HEAD --short 2>/dev/null`
       - STAGE_NAME=dev
