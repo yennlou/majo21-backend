@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --coverage"
+    "test": "jest --verbose --coverage",
+    "dev": "env-cmd sls offline start"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +23,8 @@
     "@babel/preset-env": "^7.8.3",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
-    "codecov": "^3.6.5",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.0",
@@ -34,7 +35,6 @@
     "jest": "^25.1.0",
     "jest-dynalite": "^1.1.6",
     "serverless": "^1.63.0",
-    "serverless-dotenv-plugin": "^2.1.1",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^5.12.1",
     "serverless-webpack": "^5.3.1",
