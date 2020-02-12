@@ -88,9 +88,3 @@ Resources:
       Triggers:
         Webhook: true
       TimeoutInMinutes: 10
-
-      
-
-    
-
-  
