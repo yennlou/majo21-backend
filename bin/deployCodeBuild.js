@@ -14,12 +14,13 @@ const makeParams = (stage = 'beta') => {
   const {
     GITHUB_BRANCH: GithubBranch,
     GITHUB_TOKEN: GithubToken,
-    GITHUB_WEBHOOK_SECRET: GithubWebhookSecret
+    GITHUB_WEBHOOK_SECRET: GithubWebhookSecret,
+    CODECOV_TOKEN: CodecovToken
   } = dotenv.config({
     path: path.join(__dirname, `../${envFile}`)
   }).parsed
 
-  const parameters = { GithubBranch, GithubToken, GithubWebhookSecret }
+  const parameters = { GithubBranch, GithubToken, GithubWebhookSecret, CodecovToken }
 
   const params = {
     StackName: `majo21-backend-cicd-${stage}`,

@@ -19,6 +19,9 @@ Parameters:
   GithubWebhookSecret:
     NoEcho: true
     Type: String
+  CodecovToken:
+    NoEcho: true
+    Type: String
   BuildType:
     Type: String
     Default: LINUX_CONTAINER
@@ -74,6 +77,8 @@ Resources:
           - Name: GITHUB_WEBHOOK_SECRET
             Type: PLAINTEXT
             Value: !Ref GithubWebhookSecret
+          - Name: CODECOV_TOKEN
+            Value: !Ref CodecovToken
       Source:
         Auth:
           Type: OAUTH
