@@ -9,7 +9,7 @@ phases:
     commands:
       - echo start testing
       - npm run test
-      - npx codecov -t ${CODECOV_TOKEN} -b ${GITHUB_BRANCH}
+      - bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -P undefined
       - echo end testing
   build:
     commands:

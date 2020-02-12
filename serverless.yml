@@ -63,7 +63,7 @@ provider:
   stage: dev
   environment:
     DYNAMODB_TABLE: ${self:custom.tableName}
-    DYNAMODB_ENDPOINT_LOCAL: ${env:DYNAMODB_ENDPOINT_LOCAL}
+    DYNAMODB_ENDPOINT_LOCAL: http://localhost:8000
     GITHUB_TOKEN: ${env:GITHUB_TOKEN}
     GITHUB_WEBHOOK_SECRET: ${env:GITHUB_WEBHOOK_SECRET}
     GITHUB_ENDPOINT: ${env:GITHUB_ENDPOINT}
