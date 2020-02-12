@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CI/CD for the backend part of MAJO21
+Parameters:
+  GithubEndpoint:
+    Type: String
+    Default: https://api.github.com/repos/yennlou/majo21-backend
+  GithubUser:
+    Type: String
+    Default: yennlou
+  GithubRepo:
+    Type: String
+    Default: majo21-backend
+  GithubBranch:
+    Type: String
+    Default: dev
+  GithubToken:
+    NoEcho: true
+    Type: String
+  GithubWebhookSecret:
+    NoEcho: true
+    Type: String
+  BuildType:
+    Type: String
+    Default: LINUX_CONTAINER
+  BuildComputeType:
+    Type: String
+    Default: BUILD_GENERAL1_SMALL
+  BuildImage:
+    Type: String
+    Default: 'aws/codebuild/amazonlinux2-x86_64-standard:2.0'
+Resources:
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'sts:AssumeRole'
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+      Policies:
+        - PolicyName: "codebuild-service"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+  CodeBuildDeploySite:
+    Type: 'AWS::CodeBuild::Project'
+    DependsOn: CodeBuildRole
+    Properties:
+      Name: !Sub '${AWS::StackName}-deploy'
+      Description: Deploy serverless app - majo21-backend
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        Type: !Ref BuildType
+        ComputeType: !Ref BuildComputeType
+        Image: !Sub '${BuildImage}'
+        EnvironmentVariables:
+          - Name: GITHUB_ENDPOINT
+            Type: String
+            Value: !Ref GithubEndpoint
+          - Name: GITHUB_BRANCH
+            Type: String
+            Value: !Ref GithubBranch
+          - Name: GITHUB_TOKEN
+            Type: String
+            Value: !Ref GithubToken
+          - Name: GITHUB_WEBHOOK_SECRET
+            Type: String
+            Value: !Ref GithubWebhookSecret
+      Source:
+        Auth:
+          Type: OAUTH
+        Location: !Join
+          - ''
+          - - 'https://github.com/'
+            - !Ref GithubUser
+            - '/'
+            - !Ref GithubRepo
+        Type: GITHUB
+      SourceVersion: !Ref GithubBranch
+      Triggers:
+        Webhook: true
+      TimeoutInMinutes: 10
+
+      
+
+    
+
+  
