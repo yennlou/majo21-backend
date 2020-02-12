@@ -9,15 +9,13 @@ phases:
     commands:
       - echo start testing
       - npm run test
-      - npx codecov -t ${CODECOV_TOKEN}
+      - npx codecov -t ${CODECOV_TOKEN} -b ${GITHUB_BRANCH}
       - echo end testing
   build:
     commands:
       - echo start deploying
-      - REPO_BRANCH=`git symbolic-ref HEAD --short 2>/dev/null`
-      - STAGE_NAME=dev
       - |
-        if [ "${REPO_BRANCH}" = "master" ]; then
+        if [ "${GITHUB_BRANCH}" = "master" ]; then
           STAGE_NAME=prod
         fi
       - npx sls deploy -s ${STAGE_NAME}
