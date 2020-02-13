@@ -1,11 +1,14 @@
 import db from '../utils/db'
-import { success, failure } from '../utils/response'
+import { success, handleException } from '../utils/response'
 
 const main = async (event) => {
   const { pathParameters: { postId } } = event
-  const post = await db.getPost(postId)
-  if (!post) return failure({ message: 'Post not found.' })
-  return success(post)
+  try {
+    const post = await db.getPost(postId)
+    return success(post)
+  } catch (e) {
+    handleException(e)
+  }
 }
 
 export { main }

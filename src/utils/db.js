@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+import exception from './exception'
 
 const IS_OFFLINE = process.env.IS_OFFLINE
 const TableName = process.env.DYNAMODB_TABLE
@@ -57,7 +58,7 @@ const getPost = async (id) => {
   }
   const resp = await dynamodb.query(params).promise()
   if (!resp.Items.length) {
-    return null
+    throw new exception.Error404()
   }
   return deserializePost(resp.Items[0])
 }

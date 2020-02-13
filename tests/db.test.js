@@ -1,3 +1,5 @@
+import exception from '../src/utils/exception'
+
 const post01 = {
   id: 'post:posts/blog/sample_post_01.md',
   createdAt: '2020-01-12',
@@ -41,6 +43,11 @@ describe('Testing db library', () => {
     expect(resp).toEqual(post01)
   })
 
+  test('get one post which doesn\'t exist', async () => {
+    await expect(db.getPost(post01.id))
+      .rejects.toEqual(new exception.Error404())
+  })
+
   test('get blog posts', async () => {
     await db.putPost(post01)
     await db.putPost(post02)
@@ -61,5 +68,16 @@ describe('Testing db library', () => {
     await db.putPost(post01)
     const resp = await db.deletePost(post01.id)
     expect(resp).toEqual(post01)
+  })
+
+  test('update one post', async () => {
+    await db.putPost(post01)
+    const updatedPost1 = {
+      ...post01,
+      title: '我的第一篇修改过的文章'
+    }
+    await db.updatePost(updatedPost1)
+    const post = await db.getPost(post01.id)
+    expect(post.title).toBe('我的第一篇修改过的文章')
   })
 })
