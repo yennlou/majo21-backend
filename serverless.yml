@@ -63,6 +63,10 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:custom.tableName}
     DYNAMODB_ENDPOINT_LOCAL: http://localhost:8000
+    GITHUB_TOKEN: ${env:GITHUB_TOKEN}
+    GITHUB_WEBHOOK_SECRET: ${env:GITHUB_WEBHOOK_SECRET}
+    GITHUB_BRANCH: ${env:GITHUB_BRANCH}
+    GITHUB_ENDPOINT: ${env:GITHUB_ENDPOINT}
   iamRoleStatements:
     - Effect: Allow
       Action:
