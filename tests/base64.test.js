@@ -6,7 +6,3 @@ test('test base64 lib', () => {
   expect(base64.encode(text)).toBe(encodedText)
   expect(base64.decode(encodedText)).toBe(text)
 })
-
-test('fail intentionally', () => {
-  expect(2).toBe(4)
-})
