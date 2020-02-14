@@ -57,6 +57,7 @@ Resources:
     Properties:
       Name: !Sub '${AWS::StackName}-deploy'
       Description: Deploy serverless app - majo21-backend
+      BadgeEnabled: true
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Artifacts:
         Type: NO_ARTIFACTS
@@ -93,3 +94,7 @@ Resources:
       Triggers:
         Webhook: true
       TimeoutInMinutes: 10
+Outputs:
+  CodeBuildUrl:
+    Description: CodeBuild Url
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/codesuite/codebuild/projects/${CodeBuildDeploySite}?region=${AWS::Region}
