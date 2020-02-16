@@ -34,6 +34,8 @@ resources:
             AttributeType: S
           - AttributeName: GSI1
             AttributeType: S
+          - AttributeName: GSI2
+            AttributeType: S
         KeySchema:
           - AttributeName: PK
             KeyType: HASH
@@ -49,6 +51,15 @@ resources:
                 KeyType: HASH
               - AttributeName: SK
                 KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: GSI2
+            KeySchema:
+              - AttributeName: GSI2
+                KeyType: HASH
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
@@ -101,3 +112,17 @@ functions:
       - http:
           path: webhooks/github/e/push
           method: post
+  getAllSeries:
+    handler: src/api/getAllSeries.main
+    events:
+      - http:
+          path: series
+          method: get
+          cors: true
+  getPostsBySeries:
+    handler: src/api/getPostsBySeries.main
+    events:
+      - http:
+          path: posts/s/{series}
+          method: get
+          cors: true

@@ -19,6 +19,9 @@
         }, {
           "AttributeName": "GSI1",
           "AttributeType": "S"
+        }, {
+          "AttributeName": "GSI2",
+          "AttributeType": "S"
         }
       ],
       "ProvisionedThroughput": {
@@ -34,6 +37,20 @@
           }, {
             "AttributeName": "SK",
             "KeyType": "RANGE"
+          }],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 4,
+            "WriteCapacityUnits": 4
+          }
+        },
+        {
+          "IndexName": "GSI2",
+          "KeySchema": [{
+            "AttributeName": "GSI2",
+            "KeyType": "HASH"
           }],
           "Projection": {
             "ProjectionType": "ALL"

@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+import base64 from './base64'
 import exception from './exception'
 
 const IS_OFFLINE = process.env.IS_OFFLINE
@@ -16,26 +17,28 @@ if (IS_OFFLINE) {
 }
 
 function serializePost (post) {
-  const { id, createdAt, postType, ...rest } = post
+  const { id, createdAt, postType, series, ...rest } = post
   return {
     PK: id,
-    SK: createdAt || '1977-01-01',
-    GSI1: 'post:' + postType,
+    SK: `createdAt:${createdAt || '1977-01-01'}`,
+    GSI1: `post:${postType}`,
+    GSI2: `series:${series || 'undefined'}`,
     ...rest
   }
 }
 
 function deserializePost (post) {
-  const { PK, SK, GSI1, ...rest } = post
+  const { PK, SK, GSI1, GSI2, ...rest } = post
   return {
     id: PK,
-    createdAt: SK,
+    createdAt: SK.replace('createdAt:', ''),
     postType: GSI1.replace('post:', ''),
+    series: GSI2 === 'series:undefined' ? undefined : GSI2.replace('series:', ''),
     ...rest
   }
 }
 
-const getPosts = async (postType = 'blog') => {
+async function getPosts (postType = 'blog') {
   const params = {
     TableName,
     IndexName: 'GSI1',
@@ -48,7 +51,7 @@ const getPosts = async (postType = 'blog') => {
   return resp.Items.map(deserializePost)
 }
 
-const getPost = async (id) => {
+async function getPost (id) {
   const params = {
     TableName,
     KeyConditionExpression: 'PK = :postId',
@@ -63,7 +66,11 @@ const getPost = async (id) => {
   return deserializePost(resp.Items[0])
 }
 
-const putPost = async (post) => {
+async function putPost (post) {
+  const { series } = post
+  if (series) {
+    await putSeries(series)
+  }
   const params = {
     TableName,
     Item: serializePost(post)
@@ -72,12 +79,16 @@ const putPost = async (post) => {
   return post
 }
 
-const putPosts = async (posts) => {
+async function putPosts (posts) {
+  for (const post of posts) {
+    if (post.series) {
+      await putSeries(post.series)
+    }
+  }
   const serializedPost = posts.map(serializePost)
   const chunks =
     [...Array(Math.ceil(serializedPost.length / 25)).keys()]
       .map(idx => serializedPost.slice(idx, idx + 25))
-
   for (const chunk of chunks) {
     const params = {
       RequestItems: {
@@ -95,7 +106,7 @@ const putPosts = async (posts) => {
   return true
 }
 
-const deletePost = async (id) => {
+async function deletePost (id) {
   const post = await getPost(id)
   const { PK, SK } = serializePost(post)
   const params = {
@@ -106,7 +117,7 @@ const deletePost = async (id) => {
   return post
 }
 
-const updatePost = async (post) => {
+async function updatePost (post) {
   const { PK, SK, ...postAttrs } = serializePost(post)
   const UpdateExpressionArray = []
   const ExpressionAttributeNames = {}
@@ -128,11 +139,53 @@ const updatePost = async (post) => {
   return post
 }
 
+async function putSeries (seriesName) {
+  const params = {
+    TableName,
+    Item: {
+      PK: `series:${base64.encode(seriesName)}`,
+      SK: 'order:1',
+      GSI1: 'series',
+      seriesName
+    }
+  }
+  await dynamodb.put(params).promise()
+  return seriesName
+}
+
+async function getAllSeries () {
+  const params = {
+    TableName,
+    IndexName: 'GSI1',
+    KeyConditionExpression: 'GSI1 = :type',
+    ExpressionAttributeValues: {
+      ':type': 'series'
+    }
+  }
+  const resp = await dynamodb.query(params).promise()
+  return resp.Items.map(item => item.seriesName)
+}
+
+async function getPostsBySeries (series) {
+  const params = {
+    TableName,
+    IndexName: 'GSI2',
+    KeyConditionExpression: 'GSI2 = :series',
+    ExpressionAttributeValues: {
+      ':series': `series:${series}`
+    }
+  }
+  const resp = await dynamodb.query(params).promise()
+  return resp.Items.map(deserializePost)
+}
+
 export default {
   getPost,
   getPosts,
   putPost,
   putPosts,
   deletePost,
-  updatePost
+  updatePost,
+  getAllSeries,
+  getPostsBySeries
 }

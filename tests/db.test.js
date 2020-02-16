@@ -48,6 +48,10 @@ describe('Testing db library', () => {
       .rejects.toEqual(new exception.Error404())
   })
 
+  test('db operation failed', async () => {
+
+  })
+
   test('get blog posts', async () => {
     await db.putPost(post01)
     await db.putPost(post02)
@@ -56,6 +60,22 @@ describe('Testing db library', () => {
     expect(resp).toEqual([post01, post02])
     resp = await db.getPosts('gallery')
     expect(resp).toEqual([post03])
+  })
+
+  test('get all series', async () => {
+    await db.putPost(post01)
+    await db.putPost(post02)
+    await db.putPost(post03)
+    const resp = await db.getAllSeries()
+    expect(resp).toEqual(['post_series_01'])
+  })
+
+  test('get posts by series', async () => {
+    await db.putPost(post01)
+    await db.putPost(post02)
+    await db.putPost(post03)
+    const resp = await db.getPostsBySeries('post_series_01')
+    expect(resp).toEqual([post01, post02])
   })
 
   test('put multiple posts', async () => {
