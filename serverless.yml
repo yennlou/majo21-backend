@@ -123,6 +123,6 @@ functions:
     handler: src/api/getPostsBySeries.main
     events:
       - http:
-          path: posts/s/{series}
+          path: posts/s/{seriesId}
           method: get
           cors: true

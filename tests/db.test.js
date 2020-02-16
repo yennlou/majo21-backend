@@ -67,7 +67,7 @@ describe('Testing db library', () => {
     await db.putPost(post02)
     await db.putPost(post03)
     const resp = await db.getAllSeries()
-    expect(resp).toEqual(['post_series_01'])
+    expect(resp).toEqual([{ id: 'cG9zdF9zZXJpZXNfMDE=', series: 'post_series_01' }])
   })
 
   test('get posts by series', async () => {

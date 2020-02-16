@@ -163,7 +163,7 @@ async function getAllSeries () {
     }
   }
   const resp = await dynamodb.query(params).promise()
-  return resp.Items.map(item => item.seriesName)
+  return resp.Items.map(item => ({ id: item.PK.replace('series:', ''), series: item.seriesName }))
 }
 
 async function getPostsBySeries (series) {
