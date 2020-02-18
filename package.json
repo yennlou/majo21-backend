@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose --coverage",
-    "dev": "env-cmd sls offline start"
+    "dev": "env-cmd sls offline start",
+    "deploy": "env-cmd sls deploy",
+    "deploy:prod": "env-cmd -r ./env.prod sls deploy"
   },
   "keywords": [],
   "author": "",
