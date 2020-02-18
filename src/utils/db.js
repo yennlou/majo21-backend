@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk'
-import base64 from './base64'
+import { Base64 } from 'js-base64'
 import exception from './exception'
 
 const IS_OFFLINE = process.env.IS_OFFLINE
@@ -143,7 +143,7 @@ async function putSeries (seriesName) {
   const params = {
     TableName,
     Item: {
-      PK: `series:${base64.encode(seriesName)}`,
+      PK: `series:${Base64.encode(seriesName)}`,
       SK: 'order:1',
       GSI1: 'series',
       seriesName

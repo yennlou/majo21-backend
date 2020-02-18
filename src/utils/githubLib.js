@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import axios from 'axios'
 import yaml, { MINIMAL_SCHEMA } from 'js-yaml'
-import base64 from './base64'
+import { Base64 } from 'js-base64'
 
 const githubAPI = axios.create({
   baseURL: process.env.GITHUB_ENDPOINT
@@ -17,7 +17,7 @@ const getPostDirectoryAsync = async (postType = 'blog') => {
 const getPostContentAsync = async (path) => {
   const GITHUB_BRANCH = process.env.GITHUB_BRANCH
   const { data } = await githubAPI.get(`/contents/${path}?ref=${GITHUB_BRANCH}`)
-  return base64.decode(data.content)
+  return Base64.decode(data.content)
 }
 
 const makePost = (encodedPath, postType, content) => {
