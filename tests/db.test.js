@@ -48,16 +48,12 @@ describe('Testing db library', () => {
       .rejects.toEqual(new exception.Error404())
   })
 
-  test('db operation failed', async () => {
-
-  })
-
   test('get blog posts', async () => {
     await db.putPost(post01)
     await db.putPost(post02)
     await db.putPost(post03)
     let resp = await db.getPosts('blog')
-    expect(resp).toEqual([post01, post02])
+    expect(resp).toEqual([post02, post01])
     resp = await db.getPosts('gallery')
     expect(resp).toEqual([post03])
   })
@@ -81,7 +77,7 @@ describe('Testing db library', () => {
   test('put multiple posts', async () => {
     await db.putPosts([post01, post02, post03])
     const resp = await db.getPosts('blog')
-    expect(resp).toEqual([post01, post02])
+    expect(resp).toEqual([post02, post01])
   })
 
   test('delete one post', async () => {
