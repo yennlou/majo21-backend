@@ -45,7 +45,8 @@ async function getPosts (postType = 'blog') {
     KeyConditionExpression: 'GSI1 = :postType',
     ExpressionAttributeValues: {
       ':postType': 'post:' + postType
-    }
+    },
+    ScanIndexForward: false
   }
   const resp = await dynamodb.query(params).promise()
   return resp.Items.map(deserializePost)
