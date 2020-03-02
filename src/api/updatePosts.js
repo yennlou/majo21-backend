@@ -6,7 +6,15 @@ const main = async (event) => {
   if (!verifyWebhookData(event)) {
     return failure('Githook validation failed.')
   }
-  const { commits } = JSON.parse(event.body)
+
+  const { commits, ref } = JSON.parse(event.body)
+
+  const branch = process.env.GITHUB_BRANCH
+  const eventBranch = ref.replace('refs/heads/', '')
+  if (branch !== eventBranch) {
+    return success({ message: 'Update ignored.' })
+  }
+
   if (commits.length === 0) {
     return success({ message: 'No updates.' })
   }
